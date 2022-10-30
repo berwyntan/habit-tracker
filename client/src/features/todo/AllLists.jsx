@@ -11,7 +11,6 @@ const AllLists = () => {
 
     const handleNewTodo = (e) => {
         setNewTodo(e.target.value)
-        console.log(newTodo)
     }
 
     const handleCheck = (e, id) => {
