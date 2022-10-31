@@ -2,16 +2,19 @@ import { useDispatch } from 'react-redux'
 import { deleteTodo, checkTodo } from './todoSlice'
 import { useNavigate } from 'react-router-dom'
 
+
 const SingleTodo = ({ text, stack, done, id }) => {
 
     
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
+    
     const handleCheck = (e, id) => {
         
         const done = e.target.checked;
         dispatch(checkTodo({ id: id, done: done }))
+        
     }
 
     const handleDelete = (id) => {
@@ -21,6 +24,8 @@ const SingleTodo = ({ text, stack, done, id }) => {
     const handleEditTodo = (id) => {
         navigate(`/${id}`)
     }
+
+    
 
     return (
         <div className='flex flex-col my-2'>  

@@ -3,25 +3,25 @@ import { nanoid } from '@reduxjs/toolkit';
 
 const initialState = [
     {
-        id: "1",
+        id: nanoid(),
         text: "Learn Redux",
         done: false,
         stack: false
     },
     {
-        id: "2",
+        id: nanoid(),
         text: "Learn RTK Query",
         done: false,
         stack: false
     },
     {
-        id: "3",
+        id: nanoid(),
         text: "Buy eggs",
         done: false,
         stack: false
     },
     {
-        id: "4",
+        id: nanoid(),
         text: "Exercise then watch Netflix",
         done: false,
         stack: true
