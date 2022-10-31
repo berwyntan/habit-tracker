@@ -1,57 +1,33 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { addTodo, deleteTodo, checkTodo } from './todoSlice'
+import { useParams, Link, Outlet } from 'react-router-dom'
 import { useState } from 'react'
+
+
 
 const AllLists = () => {
 
     const allTodos = useSelector((state) => state.todo)
     const dispatch = useDispatch()
 
-    const [newTodo, setNewTodo] = useState('')
-
-    const handleNewTodo = (e) => {
-        setNewTodo(e.target.value)
-    }
-
-    const handleCheck = (e, id) => {
-        
-        const done = e.target.checked;
-        dispatch(checkTodo({ id: id, done: done }))
-    }
-
-    const handleDelete = (id) => {
-        dispatch(deleteTodo({ id: id }));
-    }
-
-    const handleAddTodo = (e) => {
-        e.preventDefault();
-        dispatch(addTodo({ text: {newTodo} }));
-        setNewTodo('');
-    }
-
-    const list = allTodos.map(todo => {
+    // get all lists, then remove duplicates
+    const allLists = allTodos.map(todo => todo.list)
+    const uniqueLists = [...new Set(allLists)]
+    // console.log(uniqueLists)
+    const lists = uniqueLists.map(list => {
         return (
-            <div key={todo.id}>
-                {/* <span>{todo.id}. </span> */}
-                <span>{todo.text} </span>
-                <input 
-                    type="checkbox" 
-                    checked={todo.done ? "checked" : ""} 
-                    onChange={(e) => handleCheck(e, todo.id)} //
-                />
-                <button onClick={() => handleDelete(todo.id)}>delete</button>
+            <div key={list}>
+            <Link to={`${list}`}>{list}</Link>
             </div>
         )
+        
     })
 
     return (
-        <div>
-            <form onSubmit={handleAddTodo}>
-                <input value={newTodo} onChange={handleNewTodo} />
-                <button>Add Todo</button>
-            </form>
-            {list}
-        </div>
+        <>
+        <div>Lists</div>
+        {lists}
+        <Outlet />
+        </>
     )
 }
 
