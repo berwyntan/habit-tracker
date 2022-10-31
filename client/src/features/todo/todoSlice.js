@@ -6,19 +6,25 @@ const initialState = [
         id: "1",
         text: "Learn Redux",
         done: false,
-        list: "web dev"
+        stack: false
     },
     {
         id: "2",
         text: "Learn RTK Query",
         done: false,
-        list: "web dev"
+        stack: false
     },
     {
         id: "3",
         text: "Buy eggs",
         done: false,
-        list: "groceries"
+        stack: false
+    },
+    {
+        id: "4",
+        text: "Exercise then watch Netflix",
+        done: false,
+        stack: true
     },
 
 ]
@@ -31,12 +37,13 @@ export const todoSlice = createSlice({
 
             // console.log(action.payload);
             
-            const { newTodo } = action.payload.text;
+            const { text, stack } = action.payload;
             // console.log(newTodo);
             state.unshift({
                 id: nanoid(),
-                text: newTodo,
-                done: false
+                text: text,
+                done: false,
+                stack: stack
             });
             return state
             
@@ -63,11 +70,12 @@ export const todoSlice = createSlice({
         },
         editTodo: (state, action) => {
             // console.log(action)
-            const { id, text } = action.payload
+            const { id, text, stack } = action.payload
             let edit = state.find(todo => todo.id === id)
             edit = {
                 ...edit,
                 text: text,
+                stack: stack
             }
             state.splice(state.findIndex((todo) => todo.id === id), 1)
             state.unshift(edit)

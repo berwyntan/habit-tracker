@@ -1,81 +1,64 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { addTodo, deleteTodo, checkTodo } from './todoSlice'
+import { addTodo } from './todoSlice'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import SingleTodo from './SingleTodo'
 
 const AllTodos = () => {
 
     const allTodos = useSelector((state) => state.todo)
     const dispatch = useDispatch()
-    const navigate = useNavigate()
 
     const [newTodo, setNewTodo] = useState('')
+    const [newStack, setNewStack] = useState(false)
 
     const handleNewTodo = (e) => {
         setNewTodo(e.target.value)
     }
-
-    // const handleCheck = (e, id) => {
-        
-    //     const done = e.target.checked;
-    //     dispatch(checkTodo({ id: id, done: done }))
-    // }
-
-    // const handleDelete = (id) => {
-    //     dispatch(deleteTodo({ id: id }));
-    // }
-
+   
     const handleAddTodo = (e) => {
-        e.preventDefault();
-        dispatch(addTodo({ text: {newTodo} }));
-        setNewTodo('');
+        e.preventDefault()
+        dispatch(addTodo({ text: newTodo, stack: newStack }))
+        setNewTodo('')
+        setNewStack(false)
     }
 
-    // const handleEditTodo = (id) => {
-    //     console.log(id)
-    //     navigate(`${id}`)
-    // }
+    const handleNewStack = () => {
+        setNewStack(prev => !prev)
+    }
 
-
-    // const list = allTodos.map(todo => {
-
-    //     return (
-    //         <div key={todo.id}>
-                
-    //             <span>{todo.text} |</span>
-    //             <span> {todo.list} |</span>
-    //             <input 
-    //                 type="checkbox" 
-    //                 checked={todo.done ? "checked" : ""} 
-    //                 onChange={(e) => handleCheck(e, todo.id)} //
-    //             />   
-    //             <button onClick={() => handleEditTodo(todo.id)}>edit</button>             
-    //             <button onClick={() => handleDelete(todo.id)}>delete</button>
-    //         </div>
-    //     )
-    // })
-
+    
     const list = allTodos.map(todo => {
         return (
+            <div className="md:container md:mx-auto">
             <SingleTodo 
                 text={todo.text}
-                list={todo.list}
+                stack={todo.stack}
                 done={todo.done}
                 id={todo.id}
                 key={todo.id}
             />
+            </div>
         )
     })
 
     return (
         <div>
-            <form onSubmit={handleAddTodo}>
+            <form onSubmit={handleAddTodo} className='flex flex-col my-5'>
+                <div className='flex justify-center mx-3'>
+                    <input className="input input-bordered input-accent w-full max-w-lg my-3" value={newTodo} onChange={handleNewTodo} />
+                </div>
+                <div className='flex items-center justify-between sm:justify-center'>
+                    <div className='flex items-center'>
+                        <span className='ml-5'>Stacked?</span>
+                        <input type="checkbox" className="checkbox checkbox-accent mx-2 checkbox-lg" value={newStack} onChange={handleNewStack}
+                            checked={newStack ? "checked" : ""}/>
+                    </div>
+                    <div className='flex items-center mx-5'>
+                        <button className="btn btn-outline">Add Todo</button>
+                    </div>                                   
+                    
+                </div>
                 
-                <input value={newTodo} onChange={handleNewTodo} />
-                <span> list: </span>
-                <span>dropdown </span>
-                <button>Add Todo</button>
             </form>
             {list}
         </div>
