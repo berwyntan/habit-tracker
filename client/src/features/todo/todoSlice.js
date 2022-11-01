@@ -6,25 +6,33 @@ const initialState = [
         id: nanoid(),
         text: "Learn Redux",
         done: false,
-        stack: false
+        stack: false,
+        stackText: "",
+        repeat: false
     },
     {
         id: nanoid(),
         text: "Learn RTK Query",
         done: false,
-        stack: false
+        stack: false,
+        stackText: "",
+        repeat: false
     },
     {
         id: nanoid(),
         text: "Buy eggs",
         done: false,
-        stack: false
+        stack: false,
+        stackText: "",
+        repeat: false
     },
     {
         id: nanoid(),
-        text: "Exercise then watch Netflix",
+        text: "Exercise",
         done: false,
-        stack: true
+        stack: true,
+        stackText: "Watch Netflix",
+        repeat: false
     },
 
 ]
@@ -37,13 +45,14 @@ export const todoSlice = createSlice({
 
             // console.log(action.payload);
             
-            const { text, stack } = action.payload;
+            const { text, stack, stackText } = action.payload;
             // console.log(newTodo);
             state.unshift({
                 id: nanoid(),
                 text: text,
                 done: false,
-                stack: stack
+                stack: stack,
+                stackText: stackText
             });
             return state
             
@@ -70,12 +79,15 @@ export const todoSlice = createSlice({
         },
         editTodo: (state, action) => {
             // console.log(action)
-            const { id, text, stack } = action.payload
+            const { id, text, stack, stackText, done, repeat } = action.payload
             let edit = state.find(todo => todo.id === id)
             edit = {
                 ...edit,
                 text: text,
-                stack: stack
+                stack: stack,
+                stackText: stackText,
+                done: done,
+                repeat: repeat
             }
             state.splice(state.findIndex((todo) => todo.id === id), 1)
             state.unshift(edit)
